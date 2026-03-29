@@ -54,7 +54,7 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
 		ItemIdentification iden = findItemIdentification(itemId);
-		if (iden == null || !iden.type.enabled.test(config))
+		if (iden == null || !iden.type.enabled.test(config) || isItemExcluded(iden))
 		{
 			return;
 		}
@@ -85,4 +85,24 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 		final int realItemId = itemManager.canonicalize(itemID);
 		return ItemIdentification.get(realItemId);
 	}
+
+	private boolean isItemExcluded(ItemIdentification iden)
+    {
+        String excludedItems = config.excludedItems().trim();
+        if (excludedItems.isEmpty())
+        {
+            return false;
+        }
+
+        String itemName = iden.fullName.toLowerCase();
+        String[] excludedList = excludedItems.toLowerCase().split(",");
+        for (String excluded : excludedList)
+        {
+            if (itemName.equals(excluded.trim()))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

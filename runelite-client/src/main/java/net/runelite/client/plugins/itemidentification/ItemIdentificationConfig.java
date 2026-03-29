@@ -391,4 +391,14 @@ public interface ItemIdentificationConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "excludedItems",
+		name = "Excluded items",
+		description = "Comma-separated list of item names to exclude from identification (case-insensitive)."
+	)
+	default String excludedItems()
+	{
+		return "";
+	}
 }
